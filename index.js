@@ -19,7 +19,39 @@ async function run (){
 try{
 await client.connect();
 console.log('database connected successfully');
- 
+
+const database=client.db('jerinsParlour');
+const servicesCollcetion=database.collection('services');
+const reviewsCollection=database.collection('reviews'); 
+
+ // post services api
+app.post ('/services',async(req,res)=>{
+const services=req.body;
+const result=await servicesCollcetion.insertOne(services);
+res.json(result);    
+})
+
+// get services api
+app.get('/services',async(req,res)=>{
+const cursor=servicesCollcetion.find({})
+const services=await cursor.toArray();
+res.json(services);
+})
+
+// post reviews api
+app.post('/reviews',async(req,res)=>{
+const reviews=req.body;
+const result=await reviewsCollection.insertOne(reviews);
+res.json(result);
+})
+
+// get reviews api 
+app.get('/reviews',async(req,res)=>{
+const cursor= reviewsCollection.find({});
+const reviews= await cursor.toArray();
+res.json(reviews);
+})
+
 }
 finally{
  
